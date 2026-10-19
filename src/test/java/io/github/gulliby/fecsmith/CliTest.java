@@ -25,6 +25,23 @@ class CliTest {
     }
 
     @Test
+    @org.junit.jupiter.api.DisplayName("[--version]")
+    void standaloneVersionPrintsTheBuildVersionOnce() {
+        assertRun(List.of("--version"), 0, "fecsmith 0.1.0\n", "", 0);
+    }
+
+    @Test
+    @org.junit.jupiter.api.DisplayName("Non-standalone --version")
+    void versionIsNotSpecialWithOtherArgumentsOrAssignment() {
+        assertRun(List.of("--version", "crc"), 2, "",
+                "fecsmith: unknown command \"--version\"\n");
+        assertRun(List.of("weights", "--version"), 2, "",
+                "fecsmith: unknown option \"--version\"\n");
+        assertRun(List.of("--version=1"), 2, "",
+                "fecsmith: unknown command \"--version=1\"\n");
+    }
+
+    @Test
     void missingCommandHasTheExactDiagnosticAndNoOutput() {
         assertRun(List.of(), 2, "",
                 "fecsmith: missing command (crc, secded, rs, conv, weights, outcomes, burst or dfree)\n", 0);

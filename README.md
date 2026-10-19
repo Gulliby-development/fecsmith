@@ -39,6 +39,8 @@ usage: fecsmith crc [--list] MODEL HEX...
        fecsmith dfree CODE
 ```
 
+`fecsmith --version` prints the program name and its version on one line, such as `fecsmith 0.1.0`, and exits with 0.
+
 ## Commands
 
 - `crc` computes a CRC for hexadecimal input using one of 13 named models or a custom model specification; `--list` displays the catalog.

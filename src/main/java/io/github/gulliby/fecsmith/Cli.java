@@ -12,8 +12,11 @@ import io.github.gulliby.fecsmith.core.Failure;
 import io.github.gulliby.fecsmith.core.Io;
 import io.github.gulliby.fecsmith.core.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.BiFunction;
 
 /** Dispatches command-line arguments to their command adapters. */
@@ -48,6 +51,19 @@ public final class Cli {
             }
             if (argv.size() == 1 && argv.get(0).equals("--help")) {
                 io.out(USAGE + "\n");
+                return 0;
+            }
+            if (argv.size() == 1 && argv.get(0).equals("--version")) {
+                Properties properties = new Properties();
+                try (InputStream stream = Cli.class.getResourceAsStream("/fecsmith.properties")) {
+                    if (stream == null) {
+                        throw new Failure.Usage("cannot read the version");
+                    }
+                    properties.load(stream);
+                } catch (IOException exception) {
+                    throw new Failure.Usage("cannot read the version");
+                }
+                io.out("fecsmith " + properties.getProperty("version", "unknown") + "\n");
                 return 0;
             }
 
