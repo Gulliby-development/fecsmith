@@ -47,7 +47,7 @@ class HexTest {
         assertBytesError("invalid hex word \"\" (expected pairs of hex digits)", List.of(""));
         assertBytesError("invalid hex word \"0\" (expected pairs of hex digits)", List.of("0"));
         assertBytesError("invalid hex word \"ABC\" (expected pairs of hex digits)", List.of("ABC"));
-        assertBytesError("invalid hex word \"0x01\" (expected pairs of hex digits)", List.of("0x01"));
+        assertBytesError("invalid hex word \"0x011\" (expected pairs of hex digits)", List.of("0x011"));
         assertBytesError("invalid hex word \"0x\" (expected pairs of hex digits)", List.of("0x"));
         assertBytesError("invalid hex word \"AA?\" (expected pairs of hex digits)", List.of("AA "));
         assertBytesError("invalid hex word \"?1\" (expected pairs of hex digits)", List.of("Ａ1"));

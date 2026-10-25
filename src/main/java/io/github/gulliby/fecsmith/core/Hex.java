@@ -21,17 +21,18 @@ public final class Hex {
         int count = 0;
 
         for (String word : words) {
-            if (word.isEmpty() || (word.length() & 1) != 0 || !isHex(word)) {
+            String digits = hasPrefix(word) ? word.substring(2) : word;
+            if (digits.isEmpty() || (digits.length() & 1) != 0 || !isHex(digits)) {
                 throw invalidHexWord(word);
             }
 
-            int wordBytes = word.length() / 2;
+            int wordBytes = digits.length() / 2;
             if (count + wordBytes > parsed.length) {
                 throw new Failure.Usage("too many bytes (at most 4096)");
             }
 
-            for (int i = 0; i < word.length(); i += 2) {
-                parsed[count++] = (byte) ((nibble(word.charAt(i)) << 4) | nibble(word.charAt(i + 1)));
+            for (int i = 0; i < digits.length(); i += 2) {
+                parsed[count++] = (byte) ((nibble(digits.charAt(i)) << 4) | nibble(digits.charAt(i + 1)));
             }
         }
         return Arrays.copyOf(parsed, count);
@@ -58,6 +59,10 @@ public final class Hex {
             parsed[i] = value;
         }
         return parsed;
+    }
+
+    private static boolean hasPrefix(String word) {
+        return word.length() >= 2 && word.charAt(0) == '0' && (word.charAt(1) == 'x' || word.charAt(1) == 'X');
     }
 
     private static Failure.Usage invalidHexWord(String word) {

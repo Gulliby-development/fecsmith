@@ -41,6 +41,8 @@ usage: fecsmith crc [--list] MODEL HEX...
 
 `fecsmith --version` prints the program name and its version on one line, such as `fecsmith 0.1.0`, and exits with 0.
 
+Hexadecimal words (the `HEX...` of `crc`) are pairs of hex digits in either case. A word may start with `0x` or `0X`, which is not data: `fecsmith crc crc32 0x31 0x32 0x33 34353637 0X3839` prints the same line as the first CRC example below.
+
 ## Commands
 
 - `crc` computes a CRC for hexadecimal input using one of 13 named models or a custom model specification; `--list` displays the catalog.
@@ -107,6 +109,13 @@ message   48 65 6c 6c 6f
 ### More examples
 
 Each block shows the command after `$` and its output.
+
+CRC with prefixed hex words:
+
+```console
+$ fecsmith crc crc32 0x31 0x32 0x33 34353637 0X3839
+crc32 over 9 bytes: cbf43926
+```
 
 CRC with a custom model:
 
