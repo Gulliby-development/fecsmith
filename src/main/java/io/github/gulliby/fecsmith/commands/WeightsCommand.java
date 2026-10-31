@@ -17,7 +17,9 @@ public final class WeightsCommand {
     }
 
     public static int run(List<String> argv, Io io) {
-        List<String> args = Options.parse(argv, List.of()).args();
+        Options.Parsed parsed = Options.parse(argv, List.of(Options.Spec.flag("--cumulative")));
+        List<String> args = parsed.args();
+        boolean cumulative = parsed.values().get("--cumulative") == 1;
         if (args.isEmpty()) {
             throw new Failure.Usage("missing K");
         }
@@ -34,13 +36,20 @@ public final class WeightsCommand {
                 .orElseThrow();
 
         List<List<String>> rows = new ArrayList<>(distribution.size());
+        long running = 0;
         for (Map.Entry<Integer, Long> entry : distribution.entrySet()) {
-            rows.add(List.of(Integer.toString(entry.getKey()), Long.toString(entry.getValue())));
+            running += entry.getValue();
+            if (cumulative) {
+                rows.add(List.of(Integer.toString(entry.getKey()), Long.toString(entry.getValue()), Long.toString(running)));
+            } else {
+                rows.add(List.of(Integer.toString(entry.getKey()), Long.toString(entry.getValue())));
+            }
         }
+        List<String> header = cumulative ? List.of("weight", "codewords", "cumulative") : List.of("weight", "codewords");
 
         String output = "secded k=" + layout.k() + " r=" + layout.r() + " n=" + layout.n()
                 + ", minimum distance " + minimumDistance + "\n"
-                + table(List.of("weight", "codewords"), rows);
+                + table(header, rows);
         io.out(output);
         return 0;
     }
