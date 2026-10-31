@@ -25,7 +25,7 @@ public final class Cli {
             + "       fecsmith secded encode|decode BITS\n"
             + "       fecsmith rs encode|decode [--m M] [--nsym N] SYMBOL...\n"
             + "       fecsmith conv encode|decode CODE BITS\n"
-            + "       fecsmith weights K\n"
+            + "       fecsmith weights [--cumulative] K\n"
             + "       fecsmith outcomes [--errors N] K\n"
             + "       fecsmith burst [--max-len N] MODEL\n"
             + "       fecsmith dfree CODE";

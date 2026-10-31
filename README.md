@@ -33,7 +33,7 @@ usage: fecsmith crc [--list] MODEL HEX...
        fecsmith secded encode|decode BITS
        fecsmith rs encode|decode [--m M] [--nsym N] SYMBOL...
        fecsmith conv encode|decode CODE BITS
-       fecsmith weights K
+       fecsmith weights [--cumulative] K
        fecsmith outcomes [--errors N] K
        fecsmith burst [--max-len N] MODEL
        fecsmith dfree CODE
@@ -49,7 +49,7 @@ Hexadecimal words (the `HEX...` of `crc`) are pairs of hex digits in either case
 - `secded` encodes data with extended Hamming codes or decodes a codeword, correcting a single-bit error and reporting detected double-bit or uncorrectable errors.
 - `rs` encodes or decodes symbols using Reed-Solomon codes over GF(2^m), reporting corrected errors or an uncorrectable word.
 - `conv` encodes bits or decodes received bits with the supported rate-1/2 convolutional codes `k3`, `k5` and `k7`.
-- `weights` reports the weight distribution and minimum distance of an extended Hamming code for the requested data size.
+- `weights` reports the weight distribution and minimum distance of an extended Hamming code for the requested data size; `--cumulative` adds a running total of the codewords.
 - `outcomes` counts corrected, detected and wrong outcomes for SECDED words with each requested number of flipped bits.
 - `burst` counts CRC-undetected burst error patterns through the selected maximum length.
 - `dfree` finds and reports the free distance and a corresponding path for a convolutional code.
@@ -170,6 +170,8 @@ weight  codewords
 4       14
 8       1
 ```
+
+With `--cumulative`, a third column `cumulative` holds the number of codewords of that weight or lower, so the last row shows all 2^K codewords. The flag may come before or after K and may be repeated; `--cumulative=1` is a usage error.
 
 Error outcomes:
 
